@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Predictopia - Social Prediction Market</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Predictopia</h1>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="container">
+            {% for prediction in predictions %}
+            <div class="prediction-card">
+                <div class="prediction-header">
+                    <div class="prediction-title">{{ prediction.title }}</div>
+                </div>
+                <div class="outcome-options">
+                    {% for outcome in prediction.outcomes.all %}
+                    <div class="outcome-option" data-outcome-id="{{ outcome.id }}">
+                        <span>{{ outcome.name }}</span>
+                        <span>
+                            <span class="probability">{{ outcome.probability }}%</span>
+                            <span class="odds">{{ outcome.odds }}x</span>
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="resources">
+                    <strong>Resources:</strong><br>
+                    {% for resource in prediction.resources.split(',') %}
+                    <a href="{{ resource }}">{{ resource }}</a><br>
+                    {% endfor %}
+                </div>
+                <!-- Add engagement stats here -->
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.outcome-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const outcomeId = option.getAttribute('data-outcome-id');
+                const amount = prompt("Enter your prediction amount:");
+
+                if (amount) {
+                    fetch("{% url 'place_prediction' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                        body: JSON.stringify({ outcome_id: outcomeId, amount: amount })
+                    })
+                    .then(response => response.json())
+                    .then(data => alert(data.message));
+                }
+            });
+        });
+    </script>
+</body>
+</html>
