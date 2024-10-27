@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Target</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Add a New Target</h1>
+    <form method="post" action="{% url 'add_target' %}">
+        {% csrf_token %}
+        {{ target_form.as_p }}
+        <h2>Possible Outcomes</h2>
+        <div id="outcome-formset">
+            {{ outcome_formset.management_form }}
+            {% for form in outcome_formset %}
+                <div class="outcome-form">
+                    {{ form.as_p }}
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" id="add-outcome">Add Outcome</button>
+        <button type="submit">Add Target</button>
+    </form>
+
+    <script>
+        $(document).ready(function() {
+            var form_idx = $('#id_outcome_set-TOTAL_FORMS').val();
+            $('#add-outcome').click(function() {
+                $('#outcome-formset').append($('#empty-form').html().replace(/__prefix__/g, form_idx));
+                form_idx++;
+                $('#id_outcome_set-TOTAL_FORMS').val(form_idx);
+            });
+        });
+    </script>
+
+    <div id="empty-form" style="display: none;">
+        {{ outcome_formset.empty_form.as_p }}
+    </div>
+</body>
+</html>

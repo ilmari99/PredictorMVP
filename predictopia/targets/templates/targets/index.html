@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictopia - Social Prediction Market</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'targets/css/styles.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Predictopia</h1>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            {% for target in targets %}
+            <div class="target-card" data-target-url="{% url 'target_view' target.id %}">
+                <div class="target-header">{{ target.question }}</div>
+                <div class="outcome-options">
+                    {% for outcome in target.possible_outcomes.all %}
+                    <div class="outcome-option" data-outcome-id="{{ outcome.id }}">
+                        <span>{{ outcome.outcome }}</span>
+                        <span>
+                            <span class="probability">{{ outcome.probability }} </span>
+                            <span> | </span>
+                            <span class="betting-odd">{{ outcome.betting_odd_rounded }}x</span>
+                        </span>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="target-details">
+                    <button class="btn btn-success bet-button" disabled>Bet</button>
+                </div>
+                <div class="target-details">
+                    📊 {{ target.num_bets }}
+                    💭 {{ target.num_comments }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+
+            $('.outcome-option').click(function(event) {
+                event.stopPropagation();
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                    $('.bet-button').prop('disabled', true);
+                } else {
+                    $('.outcome-option').removeClass('selected');
+                    $(this).addClass('selected');
+                    $('.bet-button').prop('disabled', false);
+                }
+            });
+
+            $('.bet-button').click(function(event) {
+                event.stopPropagation();
+                var selectedOutcomeId = $('.outcome-option.selected').data('outcome-id');
+                if (selectedOutcomeId) {
+                    // Handle the bet logic here
+                    alert('Bet placed on outcome ID: ' + selectedOutcomeId);
+                }
+            });
+
+            $('.target-card').click(function() {
+                var targetUrl = $(this).data('target-url');
+                window.location.href = targetUrl;
+            });
+        });
+    </script>
+</body>
+</html>

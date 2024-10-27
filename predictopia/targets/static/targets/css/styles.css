@@ -1,0 +1,133 @@
+:root {
+    --primary-color: #1a8cd8;
+    --background-color: #15202b;
+    --text-color: #ffffff;
+    --border-color: #38444d;
+    --hover-color: #1c2732;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    overflow-y: scroll; /* Make the page scrollable */
+}
+
+.target-details {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 15px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: rgba(21, 32, 43, 0.95);
+    border-bottom: 1px solid var(--border-color);
+    padding: 10px 0;
+    z-index: 1000;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 20px;
+    text-align: center;
+}
+
+.target-card {
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 15px;
+    margin: 15px 0;
+    background-color: var(--background-color);
+    transition: background-color 0.2s;
+}
+
+.target-card:hover {
+    background-color: var(--hover-color);
+}
+
+.target-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.outcome-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.outcome-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.outcome-option:hover {
+    background-color: var(--primary-color);
+}
+
+.probability {
+    font-weight: bold;
+    color: #6485b893;
+}
+
+.resources {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+
+.resources a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.main-content {
+    margin-top: 60px;
+}
+
+.outcome-option {
+    cursor: pointer;
+}
+.outcome-option.selected {
+    background-color: #91b6e68e;
+}
+.probability {
+    color: rgb(168, 168, 168);
+}
+.betting-odd {
+    color: rgb(0, 190, 0);
+    font-weight: bold;
+}
+.resources-icon {
+    cursor: pointer;
+}
+.resources-tooltip {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 5px;
+    z-index: 1000;
+}
